@@ -18,6 +18,7 @@ public class Productaction {
 
 	public Productaction(WebDriver driver) {
 		this.driver = driver;
+		
 	}
 
 	private WebElement BeatsHeadPhone() {
