@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.junit.After;
@@ -11,9 +12,15 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+
 import br.com.resinet.hub_tdd.ScreenObject.Homeaction;
 import br.com.resinet.hub_tdd.ScreenObject.Loginaction;
 import br.com.resinet.hub_tdd.ScreenObject.Registeraction;
+import br.com.resinet.hub_tdd.Utils.Report;
+import br.com.resinet.hub_tdd.Utils.Screenshot;
 import br.com.rsinet.hub_tdd.provaTDD.driverFactory.DriverFactory;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -23,6 +30,8 @@ public class TesteCadastro {
 	public Homeaction homeaction;
 	public Loginaction logaction;
 	public Registeraction registeraction;
+	ExtentTest test = Report.getTest();
+	ExtentReports extent = Report.getExtent();
 
 	@Before
 	public void inicia() throws MalformedURLException, InterruptedException {
@@ -31,13 +40,14 @@ public class TesteCadastro {
 		homeaction = new Homeaction(driver);
 		registeraction = new Registeraction(driver);
 	}
-	@Ignore
+	
 	@Test
-	public void testes() throws InterruptedException, MalformedURLException {
+	public void testes() throws InterruptedException, IOException {
+		
 		homeaction.clicaopcoes();
 		homeaction.clicaLogin();
 		logaction.clicaRegistrar();
-		registeraction.escreveUser("Alan55");
+		registeraction.escreveUser("Alan56");
 		registeraction.escreverEmail("almiespp3@hotmail.com");
 		registeraction.escrevePassword("WATATATa28");
 		registeraction.escreveConfirmaPassword("WATATATa28");
@@ -56,9 +66,15 @@ public class TesteCadastro {
 		registeraction.waitAction();
 		assertTrue(homeaction.HeadPhones2().getText().contains("HEADPHONE"));
 		
+		test = extent.startTest("Registro válido");
+		
+		String screenShotPath = Screenshot.capture(driver, "RegisterValid");
+		test.log(LogStatus.PASS, "Funcionou: " + test.addScreenCapture(screenShotPath));
+		
 	}
 	@Test
-	public void testeserro() throws InterruptedException, MalformedURLException {
+	public void testeserro() throws InterruptedException, IOException {
+		
 		homeaction.clicaopcoes();
 		homeaction.clicaLogin();
 		logaction.clicaRegistrar();
@@ -78,6 +94,11 @@ public class TesteCadastro {
 		registeraction.EscreveCep("08669-267778888888");
 		registeraction.Registrando();
 		assertFalse(registeraction.registerbtn().isEnabled());
+		
+		test = extent.startTest("Registro inválido");
+		
+		String screenShotPath = Screenshot.capture(driver, "RegisterValid");
+		test.log(LogStatus.PASS, "Funcionou: " + test.addScreenCapture(screenShotPath));
 
 	}
 
