@@ -42,6 +42,9 @@ public class Productaction {
 		return driver.findElement(By.xpath("//android.widget.RelativeLayout[@content-desc=\"Search\"]/android.widget.LinearLayout/android.widget.TextView"));
 		
 }
+	public WebElement NomeFone() {
+			return driver.findElement(By.id("com.Advantage.aShopping:id/textViewProductName"));
+}
 
 	public void clicaPhone() {
 		ElementoCerto().click();

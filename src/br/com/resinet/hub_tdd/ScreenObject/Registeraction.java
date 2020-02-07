@@ -167,7 +167,6 @@ public class Registeraction {
 	public void clicaPais() {
 		Country().click();
 	}
-
 	public void escolhePais() {
 		((FindsByAndroidUIAutomator<WebElement>) driver).findElementByAndroidUIAutomator(
 				"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\""

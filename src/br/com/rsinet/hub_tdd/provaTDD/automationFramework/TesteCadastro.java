@@ -1,6 +1,5 @@
 package br.com.rsinet.hub_tdd.provaTDD.automationFramework;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -8,7 +7,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -30,6 +31,19 @@ public class TesteCadastro {
 	public Homeaction homeaction;
 	public Loginaction logaction;
 	public Registeraction registeraction;
+
+	@BeforeClass
+	public static void IniciaReport() {
+		Report.iniciaReport();
+
+	}
+
+	@AfterClass
+	public static void fechaReport() {
+		Report.fechaReport();
+
+	}
+
 	ExtentTest test = Report.getTest();
 	ExtentReports extent = Report.getExtent();
 
@@ -40,14 +54,21 @@ public class TesteCadastro {
 		homeaction = new Homeaction(driver);
 		registeraction = new Registeraction(driver);
 	}
-	
+
+	@After
+	public void fechaDriver() {
+		((AndroidDriver) driver).quit();
+	}
+
 	@Test
-	public void testes() throws InterruptedException, IOException {
-		
+	public void testeCerto() throws InterruptedException, IOException {
+
+		test = extent.startTest("Cadastro Valido");
+
 		homeaction.clicaopcoes();
 		homeaction.clicaLogin();
 		logaction.clicaRegistrar();
-		registeraction.escreveUser("Alan56");
+		registeraction.escreveUser("Alaxar0");
 		registeraction.escreverEmail("almiespp3@hotmail.com");
 		registeraction.escrevePassword("WATATATa28");
 		registeraction.escreveConfirmaPassword("WATATATa28");
@@ -61,24 +82,26 @@ public class TesteCadastro {
 		registeraction.EscreveEndereço("Rua Jarara");
 		registeraction.EscreveCidade("Barueri");
 		registeraction.EscreveCep("08669-265");
-		registeraction.desabilitaCaixa();
+//		registeraction.desabilitaCaixa();
 		registeraction.Registrando();
-		registeraction.waitAction();
 		assertTrue(homeaction.HeadPhones2().getText().contains("HEADPHONE"));
-		
-		test = extent.startTest("Registro válido");
-		
-		String screenShotPath = Screenshot.capture(driver, "RegisterValid");
+
+		String screenShotPath = Screenshot.capture(driver, "Cadastro Valido");
+
 		test.log(LogStatus.PASS, "Funcionou: " + test.addScreenCapture(screenShotPath));
-		
+		test = extent.startTest("Registro válido");
+
 	}
+
 	@Test
 	public void testeserro() throws InterruptedException, IOException {
-		
+
+		test = extent.startTest("Cadastro Invalido");
+
 		homeaction.clicaopcoes();
 		homeaction.clicaLogin();
 		logaction.clicaRegistrar();
-		registeraction.escreveUser("Almirz74");
+		registeraction.escreveUser("Aluran");
 		registeraction.escreverEmail("almirAAAaab@hotmailcom");
 		registeraction.escrevePassword("1234567aB");
 		registeraction.escreveConfirmaPassword("1234567aB");
@@ -94,17 +117,11 @@ public class TesteCadastro {
 		registeraction.EscreveCep("08669-267778888888");
 		registeraction.Registrando();
 		assertFalse(registeraction.registerbtn().isEnabled());
-		
-		test = extent.startTest("Registro inválido");
-		
-		String screenShotPath = Screenshot.capture(driver, "RegisterValid");
+
+		test = extent.startTest("Registro invalido");
+
+		String screenShotPath = Screenshot.capture(driver, "Registro invalido");
 		test.log(LogStatus.PASS, "Funcionou: " + test.addScreenCapture(screenShotPath));
 
 	}
-
-	@After
-	public void fechaDriver() {
-		((AndroidDriver) driver).quit();
-	}
-
 }
